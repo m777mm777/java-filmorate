@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 @SuppressWarnings("checkstyle:WhitespaceAround")
 @Data
-public class User extends BaseUnit{
+public class User extends BaseUnit {
 
     @Email
     @NotEmpty
