@@ -14,8 +14,7 @@ import java.util.List;
 @RequestMapping("/films")
 public class FilmController extends BaseController<Film> {
 
-    @SuppressWarnings("checkstyle:ModifierOrder")
-    private final static LocalDate START_RELEASE_DATA = LocalDate.of(1895,12,25);
+    private static final LocalDate START_RELEASE_DATA = LocalDate.of(1895,12,25);
 
     @PostMapping
     public Film create(@Valid @RequestBody Film film) {
