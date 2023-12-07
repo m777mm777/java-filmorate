@@ -16,7 +16,7 @@ import java.util.Objects;
 public class UserController extends BaseController<User> {
 
     @SuppressWarnings("checkstyle:ModifierOrder")
-    private final static LocalDate DATA_NOW = LocalDate.now();
+    private static final LocalDate DATA_NOW = LocalDate.now();
 
     @PostMapping
     public User create(@Valid @RequestBody User user) {
