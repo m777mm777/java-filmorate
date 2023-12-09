@@ -19,6 +19,7 @@ public class Film extends BaseUnit {
 
     @NotBlank(message = "Введите название фильма.")
     private String name;
+    @NotNull
     @Size(max = 200)
     private String description;
     @NotNull
