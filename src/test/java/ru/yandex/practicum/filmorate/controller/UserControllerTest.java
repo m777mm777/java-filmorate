@@ -26,46 +26,36 @@ public class UserControllerTest {
 
     @Test
     void getAllUserAndChekChangeNameToLogin() {
-        User user = User.builder()
-                .email("ere@eetr.ru")
-                .login("logiin")
-                .name("  ")
-                .birthday(LocalDate.of(1989,10,28))
-                .build();
+        User user = new User();
+        user.setEmail("ere@eetr.ru");
+        user.setLogin("logiin");
+        user.setName("  ");
+        user.setBirthday(LocalDate.of(1914, 7, 28));
 
         userController.create(user);
 
-        User user2 = User.builder()
-                .email("ere@eetr.ru")
-                .login("logiin")
-                .name("logiin")
-                .birthday(LocalDate.of(1989,10,28))
-                .build();
-
         List<User> collectionUser = new ArrayList<>();
-        collectionUser.add(user2);
+        collectionUser.add(user);
 
         Assertions.assertEquals(userController.getAll(),collectionUser);
     }
 
     @Test
     void updateUser() {
-        User user = User.builder()
-                .email("ere@eetr.ru")
-                .login("logiin")
-                .name("  ")
-                .birthday(LocalDate.of(1989,10,28))
-                .build();
+        User user = new User();
+        user.setEmail("ere@eetr.ru");
+        user.setLogin("logiin");
+        user.setName("  ");
+        user.setBirthday(LocalDate.of(1914, 7, 28));
 
         userController.create(user);
 
-        User user2 = User.builder()
-                .id(1L)
-                .email("ere@eetr.ru")
-                .login("NoTlogiin")
-                .name("NotLogin")
-                .birthday(LocalDate.of(1989,10,28))
-                .build();
+        User user2 = new User();
+        user2.setId(1L);
+        user2.setEmail("ere@eetr.ru");
+        user2.setLogin("logiin");
+        user2.setName("logiin");
+        user2.setBirthday(LocalDate.of(1914, 7, 28));
 
         userController.update(user2);
 
