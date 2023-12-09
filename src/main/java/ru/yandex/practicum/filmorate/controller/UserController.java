@@ -2,8 +2,10 @@ package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.filmorate.exeption.FilmorateValidationExeption;
 import ru.yandex.practicum.filmorate.model.User;
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.apache.logging.log4j.util.Strings.isBlank;
@@ -14,6 +16,7 @@ import static org.apache.logging.log4j.util.Strings.isBlank;
 public class UserController extends BaseController<User> {
 
     @SuppressWarnings("checkstyle:ModifierOrder")
+    private final static LocalDate DATA_NOW = LocalDate.now();
 
     @PostMapping
     public User create(@Valid @RequestBody User user) {
@@ -35,6 +38,9 @@ public class UserController extends BaseController<User> {
 
     @Override
     public void validate(User data) {
+        if (data.getBirthday().isAfter(DATA_NOW)) {
+            throw new FilmorateValidationExeption("User birthday data is invalid");
+        }
         if (isBlank(data.getName())) {
             data.setName(data.getLogin());
         }
