@@ -11,16 +11,16 @@ import ru.yandex.practicum.filmorate.exeption.*;
 @Slf4j
 public class ErrorHandler {
 
-    @ExceptionHandler(DataNotFoundException.class)
-    public ResponseEntity<?> entityNotFound(final DataNotFoundException e) {
-        return new ResponseEntity<>(new ErrorResponse(String.valueOf(e.getClass()), e.getMessage())
-                , HttpStatus.valueOf(404));
-    }
-
     @ExceptionHandler(DataIsNotValid.class)
     public ResponseEntity<?> entityNotValid(final DataIsNotValid e) {
         return new ResponseEntity<>(new ErrorResponse(String.valueOf(e.getClass()), e.getMessage())
                 , HttpStatus.valueOf(400));
+    }
+
+    @ExceptionHandler(DataNotFoundException.class)
+    public ResponseEntity<?> entityNotFound(final DataNotFoundException e) {
+        return new ResponseEntity<>(new ErrorResponse(String.valueOf(e.getClass()), e.getMessage())
+                , HttpStatus.valueOf(404));
     }
 
     @ExceptionHandler(OtherExceptions.class)
