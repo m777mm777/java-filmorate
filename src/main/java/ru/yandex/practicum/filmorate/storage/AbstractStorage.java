@@ -7,6 +7,7 @@ import java.util.List;
 public interface AbstractStorage<T extends BaseUnit> {
 
     public abstract void validate(T data);
+    
     T create(T data);
 
     T update(T data);
