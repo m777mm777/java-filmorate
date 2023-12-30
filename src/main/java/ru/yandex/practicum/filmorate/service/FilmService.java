@@ -18,8 +18,8 @@ public class FilmService {
         this.filmStorage = filmStorage;
     }
 
-    public void addLike(Long idFilm , Long idUser) {
-        filmStorage.addLike(idFilm,idUser);
+    public void addLike(Long idFilm, Long idUser) {
+        filmStorage.addLike(idFilm, idUser);
     }
 
     public void removeLike(Long idFilm, Long idUser) {
