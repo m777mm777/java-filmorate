@@ -26,7 +26,7 @@ public class InMemoryFilmStorage extends InMemoryBaseStorage<Film> implements Fi
         this.userStorage = userStorage;
     }
 
-    public void addLike(Long idFilm , Long idUser) {
+    public void addLike(Long idFilm, Long idUser) {
         Film film = getById(idFilm);
         User user = userStorage.getById(idUser);
             if (film != null && user != null) {
