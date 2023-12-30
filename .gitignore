@@ -10,7 +10,7 @@
 # Ignore Mac DS_Store files
 .DS_Store
 **/.DS_Store
-# Ignore Mac DS_Store files
+# Ignore Mac DS_Store  files
 hs_err_pid*
 out/
 target/
