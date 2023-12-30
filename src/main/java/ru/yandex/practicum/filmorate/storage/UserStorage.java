@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.storage;
 
-import org.springframework.web.bind.annotation.PathVariable;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.List;
@@ -14,4 +13,5 @@ public interface UserStorage extends AbstractStorage<User> {
     public List<User> getUserFriends(Long id);
 
     public List<User> getMutualFriends(Long id, Long otherId);
+
 }
