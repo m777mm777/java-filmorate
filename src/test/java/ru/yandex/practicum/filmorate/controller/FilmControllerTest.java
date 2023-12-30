@@ -1,13 +1,14 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import ru.yandex.practicum.filmorate.exeption.DataIsNotValid;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.service.FilmService;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -18,11 +19,11 @@ import java.util.List;
 @ActiveProfiles("test")
 public class FilmControllerTest {
 
-    private FilmController filmController;
+    private FilmService filmService;
 
-    @BeforeEach
-    void setUP() {
-   //     filmController = new FilmController();
+    @Autowired
+    public FilmControllerTest(FilmService filmService) {
+        this.filmService = filmService;
     }
 
     @Test
@@ -34,7 +35,7 @@ public class FilmControllerTest {
                 .duration(100)
                 .build();
 
-        filmController.create(film);
+        filmService.create(film);
 
         Film film2 = Film.builder()
                 .id(1L)
@@ -47,7 +48,7 @@ public class FilmControllerTest {
         List<Film> collectionFilm = new ArrayList<>();
         collectionFilm.add(film2);
 
-        Assertions.assertEquals(filmController.getAll(),collectionFilm);
+        Assertions.assertEquals(filmService.getAll(),collectionFilm);
     }
 
     @Test
@@ -59,7 +60,7 @@ public class FilmControllerTest {
                 .duration(100)
                 .build();
 
-        filmController.create(film);
+        filmService.create(film);
 
         Film film2 = Film.builder()
                 .id(1L)
@@ -72,7 +73,7 @@ public class FilmControllerTest {
         List<Film> collectionFilm = new ArrayList<>();
         collectionFilm.add(film2);
 
-        Assertions.assertEquals(filmController.getAll(),collectionFilm);
+        Assertions.assertEquals(filmService.getAll(),collectionFilm);
     }
 
     @Test
@@ -84,7 +85,7 @@ public class FilmControllerTest {
                 .duration(100)
                 .build();
 
-        filmController.create(film);
+        filmService.create(film);
 
         Film film2 = Film.builder()
                 .id(1L)
@@ -94,12 +95,12 @@ public class FilmControllerTest {
                 .duration(100)
                 .build();
 
-        filmController.update(film2);
+        filmService.update(film2);
 
         List<Film> collectionFilm = new ArrayList<>();
         collectionFilm.add(film2);
 
-        Assertions.assertEquals(filmController.getAll(),collectionFilm);
+        Assertions.assertEquals(filmService.getAll(),collectionFilm);
     }
 
     @Test
@@ -110,7 +111,7 @@ public class FilmControllerTest {
                 .releaseDate(LocalDate.of(1999,12,01))
                 .duration(100)
                 .build();
-       // filmController.validate(film);
+        filmService.create(film);
     }
 
     @Test
@@ -121,6 +122,6 @@ public class FilmControllerTest {
                 .releaseDate(LocalDate.of(1800,12,01))
                 .duration(100)
                 .build();
-   //     Assertions.assertThrows(DataIsNotValid.class, () -> filmController.validate(film));
+        Assertions.assertThrows(DataIsNotValid.class, () -> filmService.create(film));
     }
 }

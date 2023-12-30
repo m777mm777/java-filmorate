@@ -1,10 +1,8 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -20,11 +18,11 @@ import java.util.List;
 @ActiveProfiles("test")
 public class UserControllerTest {
 
-    private UserController userController;
+    private UserService userService;
 
-    @BeforeEach
-    void setUP() {
-   //     userController = new UserController(new UserService());
+    @Autowired
+    public UserControllerTest(UserService userService) {
+        this.userService = userService;
     }
 
     @Test
@@ -35,12 +33,12 @@ public class UserControllerTest {
         user.setName("  ");
         user.setBirthday(LocalDate.of(1914, 7, 28));
 
-        userController.create(user);
+        userService.create(user);
 
         List<User> collectionUser = new ArrayList<>();
         collectionUser.add(user);
 
-        Assertions.assertEquals(userController.getAll(),collectionUser);
+        Assertions.assertEquals(userService.getAll(),collectionUser);
     }
 
     @Test
@@ -51,7 +49,7 @@ public class UserControllerTest {
         user.setName("  ");
         user.setBirthday(LocalDate.of(1914, 7, 28));
 
-        userController.create(user);
+        userService.create(user);
 
         User user2 = new User();
         user2.setId(1L);
@@ -60,11 +58,11 @@ public class UserControllerTest {
         user2.setName("logiin");
         user2.setBirthday(LocalDate.of(1914, 7, 28));
 
-        userController.update(user2);
+        userService.update(user2);
 
         List<User> collectionUser = new ArrayList<>();
         collectionUser.add(user2);
 
-        Assertions.assertEquals(userController.getAll(),collectionUser);
+        Assertions.assertEquals(userService.getAll(),collectionUser);
     }
 }
