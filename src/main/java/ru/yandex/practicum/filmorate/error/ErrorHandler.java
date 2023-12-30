@@ -13,20 +13,17 @@ public class ErrorHandler {
 
     @ExceptionHandler(DataIsNotValid.class)
     public ResponseEntity<?> entityNotValid(final DataIsNotValid e) {
-        return new ResponseEntity<>(new ErrorResponse
-                (String.valueOf(e.getClass()), e.getMessage()), HttpStatus.valueOf(400));
+        return new ResponseEntity<>(new ErrorResponse(String.valueOf(e.getClass()), e.getMessage()), HttpStatus.valueOf(400));
     }
 
     @ExceptionHandler(DataNotFoundException.class)
     public ResponseEntity<?> entityNotFound(final DataNotFoundException e) {
-        return new ResponseEntity<>(new ErrorResponse
-                (String.valueOf(e.getClass()), e.getMessage()), HttpStatus.valueOf(404));
+        return new ResponseEntity<>(new ErrorResponse(String.valueOf(e.getClass()), e.getMessage()), HttpStatus.valueOf(404));
     }
 
     @ExceptionHandler(OtherExceptions.class)
     public ResponseEntity<?> otherExceptions(final OtherExceptions e) {
-        return new ResponseEntity<>(new ErrorResponse
-                (String.valueOf(e.getClass()), e.getMessage()), HttpStatus.valueOf(500));
+        return new ResponseEntity<>(new ErrorResponse(String.valueOf(e.getClass()), e.getMessage()), HttpStatus.valueOf(500));
     }
 
 }
