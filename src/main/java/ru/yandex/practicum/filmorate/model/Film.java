@@ -30,5 +30,8 @@ public class Film extends BaseUnit {
     private int duration;
     private Set<Long> likes = new HashSet<>();
 
+    public int quantityLike() {
+        return likes.size();
+    }
 
 }

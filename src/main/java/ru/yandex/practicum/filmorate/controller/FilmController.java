@@ -1,28 +1,26 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.time.LocalDate;
 import java.util.List;
 
+@Validated
+@RequiredArgsConstructor
 @Slf4j
 @RestController
 @RequestMapping("/films")
 public class FilmController {
 
     private final FilmService filmService;
-
     public static final LocalDate START_RELEASE_DATA = LocalDate.of(1895,12,25);
-
-    @Autowired
-    public FilmController(FilmService filmService) {
-        this.filmService = filmService;
-    }
 
     @PostMapping
     public Film create(@Valid @RequestBody Film film) {
@@ -55,7 +53,7 @@ public class FilmController {
     }
 
     @GetMapping("/popular")
-    public List getFilmTopTenLike(@RequestParam(defaultValue = "10") Integer count) {
+    public List getFilmTopTenLike(@RequestParam(defaultValue = "10") @Positive Integer count) {
         log.info("Get get Film Top Like {}");
         return filmService.getFilmTopTenLike(count);
     }

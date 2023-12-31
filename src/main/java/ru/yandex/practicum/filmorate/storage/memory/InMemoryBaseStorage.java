@@ -1,13 +1,11 @@
 package ru.yandex.practicum.filmorate.storage.memory;
 
 import ru.yandex.practicum.filmorate.exeption.DataNotFoundException;
+import ru.yandex.practicum.filmorate.exeption.OtherExceptions;
 import ru.yandex.practicum.filmorate.model.BaseUnit;
 import ru.yandex.practicum.filmorate.storage.AbstractStorage;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class InMemoryBaseStorage<T extends BaseUnit> implements AbstractStorage<T> {
 
@@ -25,7 +23,7 @@ public class InMemoryBaseStorage<T extends BaseUnit> implements AbstractStorage<
     @Override
     public T update(T data) {
         if (!storage.containsKey(data.getId())) {
-            throw new DataNotFoundException("Data not found");
+            throw new OtherExceptions("Data not found");
         }
 
         validate(data);
@@ -40,7 +38,9 @@ public class InMemoryBaseStorage<T extends BaseUnit> implements AbstractStorage<
 
     @Override
     public T getById(Long id) {
-        if (!storage.containsKey(id)) {
+        Long i = Optional.of(id).orElseThrow(() -> new DataNotFoundException("Такого пользователя нет"));
+
+        if (!storage.containsKey(i)) {
             throw new DataNotFoundException("Data not found");
         }
         return storage.get(id);
@@ -48,14 +48,15 @@ public class InMemoryBaseStorage<T extends BaseUnit> implements AbstractStorage<
 
     @Override
     public void deleteById(Long id) {
-        if (!storage.containsKey(id)) {
-            throw new DataNotFoundException("Data not found");
-        }
-        storage.remove(id);
+        storage.remove(checkingAvailability(id,"Такого пользователя нет").getId());
     }
 
     @Override
     public void validate(T data) {
+    }
+
+    protected T checkingAvailability(Long id, String message) {
+        return getById(Optional.of(id).orElseThrow(() -> new DataNotFoundException(message)));
     }
 
 }
