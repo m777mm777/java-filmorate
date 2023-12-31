@@ -35,11 +35,11 @@ public class InMemoryFilmStorage extends InMemoryBaseStorage<Film> implements Fi
     public void removeLike(Long idFilm, Long idUser) {
         Film film = checkingAvailability(idFilm,"фильм не найден");
         Long id = checkId(idUser,"Пользователь  не найден");
-
-        if (!film.getLikes().contains(film.getId())) {
-            throw new DataNotFoundException("фильм не найден");
+        if (film != null && userStorage.getById(id) != null) {
+            getById(idFilm).getLikes().remove(idUser);
+        } else {
+            throw new DataNotFoundException("Фильм или пользователь не найден");
         }
-        film.getLikes().remove(id);
     }
 
     public List<Film> getFilmTopTenLike(Integer count) {
