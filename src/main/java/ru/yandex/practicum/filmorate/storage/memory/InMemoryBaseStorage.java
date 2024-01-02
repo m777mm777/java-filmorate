@@ -38,9 +38,8 @@ public class InMemoryBaseStorage<T extends BaseUnit> implements AbstractStorage<
 
     @Override
     public T getById(Long id) {
-        Long i = Optional.of(id).orElseThrow(() -> new DataNotFoundException("Такого пользователя нет"));
 
-        if (!storage.containsKey(i)) {
+        if (!storage.containsKey(id)) {
             throw new DataNotFoundException("Data not found");
         }
         return storage.get(id);

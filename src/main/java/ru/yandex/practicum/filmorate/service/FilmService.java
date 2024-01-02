@@ -3,10 +3,12 @@ package ru.yandex.practicum.filmorate.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.exeption.DataNotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FilmService {
@@ -43,7 +45,9 @@ public class FilmService {
     }
 
     public Film getById(Long id) {
-        return filmStorage.getById(id);
+        Long i = Optional.of(id).orElseThrow(() -> new DataNotFoundException("Такого фильма нет"));
+
+        return filmStorage.getById(i);
     }
 
     public void deleteById(Long id) {

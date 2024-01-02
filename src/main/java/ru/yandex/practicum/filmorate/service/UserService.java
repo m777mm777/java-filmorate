@@ -3,10 +3,12 @@ package ru.yandex.practicum.filmorate.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.exeption.DataNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -47,7 +49,9 @@ public class UserService {
     }
 
     public User getById(Long id) {
-        return userStorage.getById(id);
+        Long i = Optional.of(id).orElseThrow(() -> new DataNotFoundException("Такого пользователя нет"));
+
+        return userStorage.getById(i);
     }
 
     public void deleteById(Long id) {
