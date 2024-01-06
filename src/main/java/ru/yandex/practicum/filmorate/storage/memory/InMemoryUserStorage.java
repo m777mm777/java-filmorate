@@ -13,15 +13,17 @@ import static org.apache.logging.log4j.util.Strings.isBlank;
 public class InMemoryUserStorage extends InMemoryBaseStorage<User> implements UserStorage {
 
     public void addFriend(Long idUser1, Long idUser2) {
+        if (getById(idUser1) != null && getById(idUser2) != null) {
             getById(idUser1).getFriends().add(idUser2);
             getById(idUser2).getFriends().add(idUser1);
-
+        }
     }
 
     public void removeFriend(Long idUser1, Long idUser2) {
-        getById(idUser1).getFriends().remove(idUser2);
-        getById(idUser2).getFriends().remove(idUser1);
-
+        if (getById(idUser1) != null && getById(idUser2) != null) {
+            getById(idUser1).getFriends().remove(idUser2);
+            getById(idUser2).getFriends().remove(idUser1);
+        }
     }
 
     public List<User> getUserFriends(Long idUser) {
