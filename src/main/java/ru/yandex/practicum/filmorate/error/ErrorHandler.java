@@ -30,7 +30,7 @@ public class ErrorHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponse UnknownException(Throwable e) {
+    public ErrorResponse unknownException(Throwable e) {
         log.debug("Получен статус 500 {}", e.getMessage());
         return new ErrorResponse("Произошла непредвиденная ошибка.");
     }
