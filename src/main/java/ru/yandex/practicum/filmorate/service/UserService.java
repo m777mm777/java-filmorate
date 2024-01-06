@@ -20,19 +20,19 @@ public class UserService {
     }
 
     public void addFriend(Long id, Long friendId) {
-        userStorage.addFriend(id, friendId);
+        userStorage.addFriend(checkIdUser(id), checkIdUser(friendId));
     }
 
     public void removeFriend(Long idUser1, Long idUser2) {
-        userStorage.removeFriend(idUser1, idUser2);
+        userStorage.removeFriend(checkIdUser(idUser1), checkIdUser(idUser2));
     }
 
     public List<User> getFriends(Long idUser) {
-        return userStorage.getUserFriends(idUser);
+        return userStorage.getUserFriends(checkIdUser(idUser));
     }
 
     public List<User> getMutualFriends(Long idUser1, Long idUser2) {
-        return userStorage.getMutualFriends(idUser1, idUser2);
+        return userStorage.getMutualFriends(checkIdUser(idUser1), checkIdUser(idUser2));
     }
 
     public User create(User user) {
