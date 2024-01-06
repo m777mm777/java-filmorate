@@ -47,15 +47,11 @@ public class InMemoryBaseStorage<T extends BaseUnit> implements AbstractStorage<
 
     @Override
     public void deleteById(Long id) {
-        storage.remove(checkingAvailability(id,"Такого пользователя нет").getId());
+        storage.remove(id);
     }
 
     @Override
     public void validate(T data) {
-    }
-
-    protected T checkingAvailability(Long id, String message) {
-        return getById(Optional.of(id).orElseThrow(() -> new DataNotFoundException(message)));
     }
 
 }

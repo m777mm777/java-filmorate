@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exeption.DataNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
@@ -16,24 +15,24 @@ public class UserService {
     private final UserStorage userStorage;
 
     @Autowired
-    public UserService(@Qualifier("inMemoryUserStorage") UserStorage userStorage) {
+    public UserService(UserStorage userStorage) {
         this.userStorage = userStorage;
     }
 
     public void addFriend(Long id, Long friendId) {
-        userStorage.addFriend(id, friendId);
+        userStorage.addFriend(checkIdUser(id), checkIdUser(friendId));
     }
 
     public void removeFriend(Long idUser1, Long idUser2) {
-        userStorage.removeFriend(idUser1, idUser2);
+        userStorage.removeFriend(checkIdUser(idUser1), checkIdUser(idUser2));
     }
 
     public List<User> getFriends(Long idUser) {
-        return userStorage.getUserFriends(idUser);
+        return userStorage.getUserFriends(checkIdUser(idUser));
     }
 
     public List<User> getMutualFriends(Long idUser1, Long idUser2) {
-        return userStorage.getMutualFriends(idUser1, idUser2);
+        return userStorage.getMutualFriends(checkIdUser(idUser1), checkIdUser(idUser2));
     }
 
     public User create(User user) {
@@ -49,13 +48,15 @@ public class UserService {
     }
 
     public User getById(Long id) {
-        Long i = Optional.of(id).orElseThrow(() -> new DataNotFoundException("Такого пользователя нет"));
-
-        return userStorage.getById(i);
+        return userStorage.getById(checkIdUser(id));
     }
 
     public void deleteById(Long id) {
-        userStorage.deleteById(id);
+        userStorage.deleteById(checkIdUser(id));
+    }
+
+    private Long checkIdUser(Long id) {
+        return Optional.of(id).orElseThrow(() -> new DataNotFoundException("Не верный id пользователя"));
     }
 
 }

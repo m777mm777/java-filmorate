@@ -16,24 +16,28 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse notValid(ConstraintViolationException e) {
+        log.debug("Получен статус 400 Not valid {}", e.getMessage(), e);
         return new ErrorResponse(e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse entityNotValid(DataIsNotValid e) {
+        log.debug("Получен статус 400 Not valid {}", e.getMessage(), e);
         return new ErrorResponse(e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse entityNotFound(DataNotFoundException e) {
+        log.debug("Получен статус 404 Not found {}", e.getMessage(), e);
         return new ErrorResponse(e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse otherExceptions(OtherExceptions e) {
+        log.debug("Получен статус 500 {}", e.getMessage(), e);
         return new ErrorResponse(e.getMessage());
     }
 
