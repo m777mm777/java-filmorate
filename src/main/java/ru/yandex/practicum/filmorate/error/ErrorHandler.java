@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.error;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -13,16 +14,9 @@ import javax.validation.ConstraintViolationException;
 @Slf4j
 public class ErrorHandler {
 
-    @ExceptionHandler
+    @ExceptionHandler({ConstraintViolationException.class, DataIsNotValid.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse notValid(ConstraintViolationException e) {
-        log.debug("Получен статус 400 Not valid {}", e.getMessage(), e);
-        return new ErrorResponse(e.getMessage());
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse entityNotValid(DataIsNotValid e) {
         log.debug("Получен статус 400 Not valid {}", e.getMessage(), e);
         return new ErrorResponse(e.getMessage());
     }
@@ -34,11 +28,11 @@ public class ErrorHandler {
         return new ErrorResponse(e.getMessage());
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponse otherExceptions(OtherExceptions e) {
-        log.debug("Получен статус 500 {}", e.getMessage(), e);
-        return new ErrorResponse(e.getMessage());
+    public ErrorResponse UnknownException(Throwable e) {
+        log.debug("Получен статус 500 {}", e.getMessage());
+        return new ErrorResponse("Произошла непредвиденная ошибка.");
     }
 
 }

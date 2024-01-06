@@ -22,16 +22,12 @@ public class FilmService {
         this.filmStorage = filmStorage;
     }
 
-    public void addLike(Long idFilm, Long idUser) {
-        if (checkIdFilm(idFilm) & checkIdUser(idUser)) {
-            filmStorage.addLike(idFilm, idUser);
-        }
+    public void addLike(Optional<Long> idFilm, Optional<Long> idUser) {
+            filmStorage.addLike(checkId(idFilm), userStorage.getById(checkId(idUser)).getId());
     }
 
-    public void removeLike(Long idFilm, Long idUser) {
-        if (checkIdFilm(idFilm) & checkIdUser(idUser)) {
-            filmStorage.removeLike(idFilm, idUser);
-        }
+    public void removeLike(Optional<Long> idFilm, Optional<Long> idUser) {
+            filmStorage.removeLike(checkId(idFilm), userStorage.getById(checkId(idUser)).getId());
     }
 
     public List<Film> getFilmTopTenLike(Integer count) {
@@ -50,32 +46,15 @@ public class FilmService {
         return filmStorage.getAll();
     }
 
-    public Film getById(Long id) {
-        Long i = Optional.of(id).orElseThrow(() -> new DataNotFoundException("Не верный id фильма"));
-
-        return filmStorage.getById(i);
+    public Film getById(Optional<Long> id) {
+        return filmStorage.getById(checkId(id));
     }
 
-    public void deleteById(Long id) {
-        Long i = Optional.of(id).orElseThrow(() -> new DataNotFoundException("Не верный id фильма"));
-
-        filmStorage.deleteById(i);
+    public void deleteById(Optional<Long> id) {
+        filmStorage.deleteById(checkId(id));
     }
 
-    private Boolean checkIdUser(Long id) {
-        Long i = Optional.of(id).orElseThrow(() -> new DataNotFoundException("Не верный id пользователя"));
-        if (userStorage.getById(i) == null) {
-            throw new DataNotFoundException("Такого пользователя нет");
-        }
-        return true;
+    public Long checkId(Optional<Long> id) {
+        return id.orElseThrow(() -> new DataNotFoundException("Не верный id Фильма"));
     }
-
-    private Boolean checkIdFilm(Long id) {
-        Long i = Optional.of(id).orElseThrow(() -> new DataNotFoundException("Не верный id фильма"));
-        if (filmStorage.getById(i) == null) {
-            throw new DataNotFoundException("Такого фильма нет");
-        }
-        return true;
-    }
-
 }

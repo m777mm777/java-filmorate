@@ -7,8 +7,8 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Positive;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -37,37 +37,37 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteById(@Positive @PathVariable Long id) {
+    public void deleteById(@PathVariable Optional<Long> id) {
         log.info("Delete film {}");
         userService.deleteById(id);
     }
 
     @GetMapping("/{id}")
-    public User getById(@Positive @PathVariable Long id) {
+    public User getById(@PathVariable Optional<Long> id) {
         log.info("Get film {}");
         return userService.getById(id);
     }
 
     @PutMapping("/{id}/friends/{friendId}")
-    public void addFriend(@Positive @PathVariable Long id, @PathVariable @Positive Long friendId) {
+    public void addFriend(@PathVariable Optional<Long> id, @PathVariable Optional<Long> friendId) {
         log.info("Put friends {}");
         userService.addFriend(id, friendId);
     }
 
     @DeleteMapping("/{id}/friends/{friendId}")
-    public void removeFriend(@Positive @PathVariable Long id, @PathVariable @Positive Long friendId) {
+    public void removeFriend(@PathVariable Optional<Long> id,@PathVariable Optional<Long> friendId) {
         log.info("Delet friends {}");
         userService.removeFriend(id, friendId);
     }
 
     @GetMapping("/{id}/friends")
-    public List<User> getUserFriends(@Positive @PathVariable Long id) {
+    public List<User> getUserFriends(@PathVariable Optional<Long> id) {
         log.info("Get friends {}");
         return userService.getFriends(id);
     }
 
     @GetMapping("/{id}/friends/common/{otherId}")
-    public List<User> getMutualFriends(@Positive @PathVariable Long id, @PathVariable @Positive Long otherId) {
+    public List<User> getMutualFriends(@PathVariable Optional<Long> id, @PathVariable Optional<Long> otherId) {
         log.info("Get friends Mutual {}");
         return userService.getMutualFriends(id, otherId);
     }

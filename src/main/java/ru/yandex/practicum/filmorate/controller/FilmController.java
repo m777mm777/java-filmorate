@@ -11,6 +11,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Validated
 @RequiredArgsConstructor
@@ -41,13 +42,13 @@ public class FilmController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable Long id) {
+    public void deleteById(@PathVariable Optional<Long> id) {
         log.info("Delete film {}");
         filmService.deleteById(id);
     }
 
     @GetMapping("/{id}")
-    public Film getById(@PathVariable Long id) {
+    public Film getById(@PathVariable Optional<Long> id) {
         log.info("Get film {}");
         return filmService.getById(id);
     }
@@ -59,15 +60,14 @@ public class FilmController {
     }
 
     @PutMapping("/{id}/like/{userId}")
-    public void addLike(@PathVariable Long id, @PathVariable Long userId) {
+    public void addLike(@PathVariable Optional<Long> id, @PathVariable Optional<Long> userId) {
         log.info("Put put Film Top Like {}");
         filmService.addLike(id, userId);
     }
 
     @DeleteMapping("/{id}/like/{userId}")
-    public void removeLike(@PathVariable Long id, @PathVariable Long userId) {
+    public void removeLike(@PathVariable Optional<Long> id, @PathVariable Optional<Long> userId) {
         log.info("Delit delit Film Top Like {}");
         filmService.removeLike(id, userId);
     }
-
 }
