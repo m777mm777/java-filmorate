@@ -23,16 +23,13 @@ public class FilmService {
     }
 
     public void addLike(Long idFilm, Long idUser) {
-
-        if(checkIdFilm(idFilm) & checkIdUser(idUser)) {
+        if (checkIdFilm(idFilm) & checkIdUser(idUser)) {
             filmStorage.addLike(idFilm, idUser);
         }
     }
 
     public void removeLike(Long idFilm, Long idUser) {
-        
-        if(checkIdFilm(idFilm) & checkIdUser(idUser)) {
-
+        if (checkIdFilm(idFilm) & checkIdUser(idUser)) {
             filmStorage.removeLike(idFilm, idUser);
         }
     }
@@ -67,8 +64,7 @@ public class FilmService {
 
     private Boolean checkIdUser(Long id) {
         Long i = Optional.of(id).orElseThrow(() -> new DataNotFoundException("Не верный id пользователя"));
-
-        if(userStorage.getById(i) == null) {
+        if (userStorage.getById(i) == null) {
             throw new DataNotFoundException("Такого пользователя нет");
         }
         return true;
@@ -76,8 +72,7 @@ public class FilmService {
 
     private Boolean checkIdFilm(Long id) {
         Long i = Optional.of(id).orElseThrow(() -> new DataNotFoundException("Не верный id фильма"));
-
-        if(filmStorage.getById(i) == null) {
+        if (filmStorage.getById(i) == null) {
             throw new DataNotFoundException("Такого фильма нет");
         }
         return true;
