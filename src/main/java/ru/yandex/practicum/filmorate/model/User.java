@@ -24,6 +24,5 @@ public class User extends BaseUnit {
     @NotNull
     @PastOrPresent
     private LocalDate birthday;
-    @JsonIgnore
     private Set<Long> friends = new HashSet<>();
 }
