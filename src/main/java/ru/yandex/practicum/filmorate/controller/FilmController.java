@@ -42,15 +42,15 @@ public class FilmController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable Optional<Long> id) {
+    public void deleteById(@PathVariable Long id) {
         log.info("Delete film {}");
-        filmService.deleteById(id);
+        filmService.deleteById(Optional.of(id));
     }
 
     @GetMapping("/{id}")
-    public Film getById(@PathVariable Optional<Long> id) {
+    public Film getById(@PathVariable Long id) {
         log.info("Get film {}");
-        return filmService.getById(id);
+        return filmService.getById(Optional.of(id));
     }
 
     @GetMapping("/popular")
@@ -60,14 +60,14 @@ public class FilmController {
     }
 
     @PutMapping("/{id}/like/{userId}")
-    public void addLike(@PathVariable Optional<Long> id, @PathVariable Optional<Long> userId) {
+    public void addLike(@PathVariable Long id, @PathVariable Long userId) {
         log.info("Put put Film Top Like {}");
-        filmService.addLike(id, userId);
+        filmService.addLike(Optional.of(id), Optional.of(userId));
     }
 
     @DeleteMapping("/{id}/like/{userId}")
-    public void removeLike(@PathVariable Optional<Long> id, @PathVariable Optional<Long> userId) {
+    public void removeLike(@PathVariable Long id, @PathVariable Long userId) {
         log.info("Delit delit Film Top Like {}");
-        filmService.removeLike(id, userId);
+        filmService.removeLike(Optional.of(id), Optional.of(userId));
     }
 }
