@@ -1,9 +1,12 @@
 package ru.yandex.practicum.filmorate.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @SuppressWarnings("checkstyle:WhitespaceAround")
 @Data
@@ -16,10 +19,11 @@ public class User extends BaseUnit {
     @NotBlank
     private String login;
 
-    //Может быть пустым тогда использовать логин сделать проверку через ввалидацию собственная анотация или в коде
     private String name;
 
     @NotNull
     @PastOrPresent
     private LocalDate birthday;
+    @JsonIgnore
+    private Set<Long> friends = new HashSet<>();
 }
