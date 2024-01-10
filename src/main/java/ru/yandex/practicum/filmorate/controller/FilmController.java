@@ -1,45 +1,73 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exeption.FilmorateValidationExeption;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.service.FilmService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
+@Validated
+@RequiredArgsConstructor
 @Slf4j
 @RestController
 @RequestMapping("/films")
-public class FilmController extends BaseController<Film> {
+public class FilmController {
 
-    private static final LocalDate START_RELEASE_DATA = LocalDate.of(1895,12,25);
+    private final FilmService filmService;
+    public static final LocalDate START_RELEASE_DATA = LocalDate.of(1895,12,25);
 
     @PostMapping
     public Film create(@Valid @RequestBody Film film) {
         log.info("Creating film {}", film);
-        return super.create(film);
+        return filmService.create(film);
     }
 
     @PutMapping
     public Film update(@Valid @RequestBody Film film) {
         log.info("Update film {}", film);
-        return super.update(film);
+        return filmService.update(film);
     }
 
     @GetMapping
     public List<Film> getAll() {
         log.info("Get film {}");
-        return super.getAll();
+        return filmService.getAll();
     }
 
-    @Override
-    public void validate(Film data) {
-
-        if (data.getReleaseDate().isBefore(START_RELEASE_DATA)) {
-            throw new FilmorateValidationExeption("Film release data is invalid");
-        }
+    @DeleteMapping("/{id}")
+    public void deleteById(@PathVariable Long id) {
+        log.info("Delete film {}");
+        filmService.deleteById(Optional.of(id));
     }
 
+    @GetMapping("/{id}")
+    public Film getById(@PathVariable Long id) {
+        log.info("Get film {}");
+        return filmService.getById(Optional.of(id));
+    }
+
+    @GetMapping("/popular")
+    public List getFilmTopTenLike(@RequestParam(defaultValue = "10") @Positive Integer count) {
+        log.info("Get get Film Top Like {}");
+        return filmService.getFilmTopTenLike(count);
+    }
+
+    @PutMapping("/{id}/like/{userId}")
+    public void addLike(@PathVariable Long id, @PathVariable Long userId) {
+        log.info("Put put Film Top Like {}");
+        filmService.addLike(Optional.of(id), Optional.of(userId));
+    }
+
+    @DeleteMapping("/{id}/like/{userId}")
+    public void removeLike(@PathVariable Long id, @PathVariable Long userId) {
+        log.info("Delit delit Film Top Like {}");
+        filmService.removeLike(Optional.of(id), Optional.of(userId));
+    }
 }
