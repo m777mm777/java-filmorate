@@ -32,8 +32,10 @@ public class Film extends BaseUnit {
     private Mpa mpa;
     @JsonIgnore
     private Set<Long> likes = new HashSet<>();
+
     public int quantityLike() {
         return likes.size();
     }
+
     private List<Genre> genres = new ArrayList<>();
 }
