@@ -7,6 +7,6 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @NoArgsConstructor(force = true)
-public class Mpa extends BaseUnit{
+public class Mpa extends BaseUnit {
     private final String name;
 }
