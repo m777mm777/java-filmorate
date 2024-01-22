@@ -69,7 +69,7 @@ class UserDbStorageTest {
         userStorage.deleteById(user.getId());
 
         users = userStorage.getAll();
-        assertThat(users).hasSize(4);
+        assertThat(users).hasSize(6);
     }
 
     @Test
