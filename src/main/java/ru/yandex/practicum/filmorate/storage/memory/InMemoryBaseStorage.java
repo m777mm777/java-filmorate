@@ -42,6 +42,7 @@ public class InMemoryBaseStorage<T extends BaseUnit> implements AbstractStorage<
         if (!storage.containsKey(id)) {
             throw new DataNotFoundException("Data not found");
         }
+
         return storage.get(id);
     }
 
