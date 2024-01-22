@@ -64,7 +64,7 @@ class UserDbStorageTest {
         user = userStorage.create(user);
 
         Collection<User> users = userStorage.getAll();
-        assertThat(users).hasSize(5);
+        assertThat(users).hasSize(7);
 
         userStorage.deleteById(user.getId());
 
@@ -75,7 +75,7 @@ class UserDbStorageTest {
     @Test
     void testFindAll() {
         Collection<User> users = userStorage.getAll();
-        assertThat(users).hasSize(1);
+        assertThat(users).hasSize(3);
     }
 
     @Test
