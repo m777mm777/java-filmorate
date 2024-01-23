@@ -222,21 +222,11 @@ public class FilmDbStorage implements FilmStorage {
         }
         return genres;
     }
-    //    public List<Genre> getGenresByFilmID(Long filmId) {
-//        String sqlQuery
-//                = "SELECT g.genre_id, g.genre_name " +
-//                "FROM genres AS g " +
-//                "INNER JOIN filmGenre AS fg ON fg.genre_id = g.genre_id WHERE film_id = ? ORDER BY genre_id ASC";
-//        List<Genre> genres = jdbcTemplate.query(sqlQuery, GenreDbStorage::createGenre, filmId);
-//
-//        return genres;
-//    }
+
     private Genre rowMapGenre(ResultSet resultSet, int i) throws SQLException {
-        
         return Genre.builder()
                 .id(resultSet.getLong("genre_id"))
                 .name(resultSet.getString("genre_name"))
                 .build();
     }
-
 }
