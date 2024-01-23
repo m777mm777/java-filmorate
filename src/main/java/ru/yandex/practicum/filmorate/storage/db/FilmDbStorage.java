@@ -174,7 +174,7 @@ public class FilmDbStorage implements FilmStorage {
         }
     }
 
-    private List<Long> checkingForGenreRepetition (List<Genre> genres) {
+    private List<Long> checkingForGenreRepetition(List<Genre> genres) {
         List<Long> check = new ArrayList<>();
         for (Genre genre : genres) {
             if (!check.contains(genre.getId())) {
@@ -232,6 +232,7 @@ public class FilmDbStorage implements FilmStorage {
 //        return genres;
 //    }
     private Genre rowMapGenre(ResultSet resultSet, int i) throws SQLException {
+        
         return Genre.builder()
                 .id(resultSet.getLong("genre_id"))
                 .name(resultSet.getString("genre_name"))
