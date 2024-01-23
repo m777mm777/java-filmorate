@@ -10,7 +10,6 @@ import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.service.GenreService;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -27,8 +26,8 @@ public class GenreController {
     }
 
     @GetMapping("/{id}")
-    public Genre getById(@PathVariable Optional<Long> id) {
-        log.info("Get genre by id {}");
+    public Genre getById(@PathVariable Long id) {
+        log.info("Get genre by id {}", id);
         return genreService.getById(id);
     }
 }

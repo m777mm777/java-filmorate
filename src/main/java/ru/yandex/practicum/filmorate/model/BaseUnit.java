@@ -11,4 +11,5 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(of = {"id"})
 public abstract class BaseUnit {
     private Long id;
+
 }
