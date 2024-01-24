@@ -115,8 +115,9 @@ class UserDbStorageTest {
                 .build();
 
         userStorage.create(user);
+        List<User> users = userStorage.getAll();
 
-        User user2 = userStorage.getById(7L);;
+        User user2 = userStorage.getById(users.get(0).getId());;
         user2.setName("Update Name");
 
         userStorage.update(user2);
@@ -149,10 +150,11 @@ class UserDbStorageTest {
                 .build();
 
         userStorage.create(user2);
+        List<User> users = userStorage.getAll();
 
-        friendsStorage.addFriend(2L, 3L);
+        friendsStorage.addFriend(users.get(0).getId(), users.get(1).getId());
 
-        List<User> friends = friendsStorage.getUserFriends(2L);
+        List<User> friends = friendsStorage.getUserFriends(users.get(0).getId());
         assertThat(friends).hasSize(1);
     }
 
@@ -177,15 +179,16 @@ class UserDbStorageTest {
                 .build();
 
         userStorage.create(user2);
+        List<User> users = userStorage.getAll();
 
-        friendsStorage.addFriend(4L, 5L);
-        Collection<User> friends = friendsStorage.getUserFriends(4L);
+        friendsStorage.addFriend(users.get(0).getId(), users.get(1).getId());
+        Collection<User> friends = friendsStorage.getUserFriends(users.get(0).getId());
 
         assertThat(friends).hasSize(1);
 
-        friendsStorage.removeFriend(4L, 5L);
+        friendsStorage.removeFriend(users.get(0).getId(), users.get(1).getId());
 
-        friends = friendsStorage.getUserFriends(4L);
+        friends = friendsStorage.getUserFriends(users.get(0).getId());
 
         assertThat(friends).hasSize(0);
     }
@@ -224,11 +227,10 @@ class UserDbStorageTest {
                 .name("name")
                 .birthday(LocalDate.now())
                 .build();
-
         userStorage.create(user3);
 
         List<User> users = userStorage.getAll();
-        
+
         friendsStorage.addFriend(users.get(2).getId(), users.get(0).getId());
         friendsStorage.addFriend(users.get(1).getId(), users.get(0).getId());
 
