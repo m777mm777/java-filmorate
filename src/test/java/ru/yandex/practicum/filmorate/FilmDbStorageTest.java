@@ -3,9 +3,7 @@ package ru.yandex.practicum.filmorate;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Mpa;
@@ -35,8 +33,7 @@ class FilmDbStorageTest {
     void testSaveFilm() {
         FilmStorage filmStorage = new FilmDbStorage(jdbcTemplate);
         MpaStorage mpaStorage = new MpaDbStorage(jdbcTemplate);
-        UserStorage userStorage = new UserDbStorage(jdbcTemplate);
-        LikeStorage likeStorage = new LikeDbStorage(jdbcTemplate);
+
         Film film = Film.builder()
                 .name("name")
                 .description("description")
@@ -59,9 +56,6 @@ class FilmDbStorageTest {
     @Test
     void testFindById() {
         FilmStorage filmStorage = new FilmDbStorage(jdbcTemplate);
-        MpaStorage mpaStorage = new MpaDbStorage(jdbcTemplate);
-        UserStorage userStorage = new UserDbStorage(jdbcTemplate);
-        LikeStorage likeStorage = new LikeDbStorage(jdbcTemplate);
 
         Film film = Film.builder()
                 .name("name")
@@ -84,9 +78,7 @@ class FilmDbStorageTest {
     @Test
     void testDeleteFilm() {
         FilmStorage filmStorage = new FilmDbStorage(jdbcTemplate);
-        MpaStorage mpaStorage = new MpaDbStorage(jdbcTemplate);
-        UserStorage userStorage = new UserDbStorage(jdbcTemplate);
-        LikeStorage likeStorage = new LikeDbStorage(jdbcTemplate);
+
         Film film = Film.builder()
                 .name("deleted film")
                 .description("description")
@@ -110,9 +102,6 @@ class FilmDbStorageTest {
     @Test
     void testFindAll() {
         FilmStorage filmStorage = new FilmDbStorage(jdbcTemplate);
-        MpaStorage mpaStorage = new MpaDbStorage(jdbcTemplate);
-        UserStorage userStorage = new UserDbStorage(jdbcTemplate);
-        LikeStorage likeStorage = new LikeDbStorage(jdbcTemplate);
 
         Film film = Film.builder()
                 .name("deleted film")
@@ -131,9 +120,6 @@ class FilmDbStorageTest {
     @Test
     void testUpdateFilm() {
         FilmStorage filmStorage = new FilmDbStorage(jdbcTemplate);
-        MpaStorage mpaStorage = new MpaDbStorage(jdbcTemplate);
-        UserStorage userStorage = new UserDbStorage(jdbcTemplate);
-        LikeStorage likeStorage = new LikeDbStorage(jdbcTemplate);
 
         Film film = Film.builder()
                 .name("deleted film")
@@ -161,7 +147,6 @@ class FilmDbStorageTest {
     @Test
     void testSaveLike() {
         FilmStorage filmStorage = new FilmDbStorage(jdbcTemplate);
-        MpaStorage mpaStorage = new MpaDbStorage(jdbcTemplate);
         UserStorage userStorage = new UserDbStorage(jdbcTemplate);
         LikeStorage likeStorage = new LikeDbStorage(jdbcTemplate);
 
@@ -206,7 +191,6 @@ class FilmDbStorageTest {
     @Test
     void testDeleteLike() {
         FilmStorage filmStorage = new FilmDbStorage(jdbcTemplate);
-        MpaStorage mpaStorage = new MpaDbStorage(jdbcTemplate);
         UserStorage userStorage = new UserDbStorage(jdbcTemplate);
         LikeStorage likeStorage = new LikeDbStorage(jdbcTemplate);
 
@@ -258,9 +242,7 @@ class FilmDbStorageTest {
 
     @Test
     void testFindPopularFilms() {
-
         FilmStorage filmStorage = new FilmDbStorage(jdbcTemplate);
-        MpaStorage mpaStorage = new MpaDbStorage(jdbcTemplate);
         UserStorage userStorage = new UserDbStorage(jdbcTemplate);
         LikeStorage likeStorage = new LikeDbStorage(jdbcTemplate);
 

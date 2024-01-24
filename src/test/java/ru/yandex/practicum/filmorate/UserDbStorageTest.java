@@ -192,7 +192,6 @@ class UserDbStorageTest {
 
     @Test
     void testGetFriends() {
-        UserStorage userStorage = new UserDbStorage(jdbcTemplate);
         FriendsStorage friendsStorage = new FriendsDbStorage(jdbcTemplate);
         Collection<User> friends = friendsStorage.getUserFriends(1L);
         assertThat(friends).hasSize(0);
@@ -236,5 +235,4 @@ class UserDbStorageTest {
         assertThat(commonFriends).hasSize(1);
         assertThat(commonFriends.get(0).getId() == 12L);
     }
-
 }
