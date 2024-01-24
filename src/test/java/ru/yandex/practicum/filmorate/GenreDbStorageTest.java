@@ -2,24 +2,30 @@ package ru.yandex.practicum.filmorate;
 
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
 import ru.yandex.practicum.filmorate.model.Genre;
+import ru.yandex.practicum.filmorate.storage.GenreStorage;
 import ru.yandex.practicum.filmorate.storage.db.GenreDbStorage;
 
 import java.util.Collection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
-@AutoConfigureTestDatabase
+@JdbcTest
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 class GenreDbStorageTest {
-    private final GenreDbStorage genreStorage;
+
+    private final JdbcTemplate jdbcTemplate;
 
     @Test
     void testFindById() {
+        GenreStorage genreStorage = new GenreDbStorage(jdbcTemplate);
         Genre genre = Genre.builder()
                 .id(4L)
                 .name("Триллер")
@@ -31,6 +37,7 @@ class GenreDbStorageTest {
 
     @Test
     void testFindAll() {
+        GenreStorage genreStorage = new GenreDbStorage(jdbcTemplate);
         Collection<Genre> genres = genreStorage.getAll();
         assertThat(genres).hasSize(6);
     }

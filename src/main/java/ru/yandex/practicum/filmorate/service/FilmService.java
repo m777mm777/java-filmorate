@@ -1,37 +1,32 @@
 package ru.yandex.practicum.filmorate.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.LikeStorage;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class FilmService {
 
     private final UserStorage userStorage;
     private final FilmStorage filmStorage;
-
-    @Autowired
-    public FilmService(@Qualifier("filmDbStorage") FilmStorage filmStorage,
-                       UserStorage userStorage) {
-        this.userStorage = userStorage;
-        this.filmStorage = filmStorage;
-    }
+    private final LikeStorage likeStorage;
 
     public void addLike(Long idFilm, Long idUser) {
-            filmStorage.addLike(filmStorage.getById(idFilm).getId(), userStorage.getById(idUser).getId());
+        likeStorage.addLike(filmStorage.getById(idFilm).getId(), userStorage.getById(idUser).getId());
     }
 
     public void removeLike(Long idFilm, Long idUser) {
-            filmStorage.removeLike(filmStorage.getById(idFilm).getId(), userStorage.getById(idUser).getId());
+        likeStorage.removeLike(filmStorage.getById(idFilm).getId(), userStorage.getById(idUser).getId());
     }
 
     public List<Film> getFilmTopTenLike(Integer count) {
-        return filmStorage.getFilmTopTenLike(count);
+        return likeStorage.getFilmTopTenLike(count);
     }
 
     public Film create(Film film) {

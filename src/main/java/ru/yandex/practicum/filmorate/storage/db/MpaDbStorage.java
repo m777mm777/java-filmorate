@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MpaDbStorage implements MpaStorage {
 
-    private final JdbcTemplate jdbcTemplate;
+    final JdbcTemplate jdbcTemplate;
 
     public Mpa getById(Long id) {
         String sqlQuery = "SELECT * FROM mpa WHERE mpa_id = ?";
@@ -39,5 +39,4 @@ public class MpaDbStorage implements MpaStorage {
                 .name(rs.getString("mpa_name"))
                 .build();
     }
-
 }

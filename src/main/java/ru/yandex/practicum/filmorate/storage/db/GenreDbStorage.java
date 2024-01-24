@@ -15,13 +15,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GenreDbStorage implements GenreStorage {
 
-    private final JdbcTemplate jdbcTemplate;
+    final JdbcTemplate jdbcTemplate;
 
     public Genre getById(Long id) {
         String sqlQuery = "SELECT * FROM genres WHERE genre_id = ?";
         List<Genre> genres = jdbcTemplate.query(sqlQuery, GenreDbStorage::createGenre, id);
 
-        if (genres.size() > 1 || genres.size() < 1) {
+        if (genres.size() != 1) {
             throw new DataNotFoundException("В базе genre по данному id нет");
         }
 
@@ -49,5 +49,4 @@ public class GenreDbStorage implements GenreStorage {
                 .name(rs.getString("genre_name"))
                 .build();
     }
-
 }

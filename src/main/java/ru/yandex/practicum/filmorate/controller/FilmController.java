@@ -54,7 +54,7 @@ public class FilmController {
 
     @GetMapping("/popular")
     public List getFilmTopTenLike(@RequestParam(defaultValue = "10") @Positive Integer count) {
-        log.info("Get get Film Top Like {}");
+        log.info("Get get Film Top Like {}", count);
         return filmService.getFilmTopTenLike(count);
     }
 

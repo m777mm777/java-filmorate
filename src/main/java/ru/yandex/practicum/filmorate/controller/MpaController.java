@@ -21,7 +21,7 @@ public class MpaController {
 
     @GetMapping
     public List<Mpa> getAll() {
-        log.info("Get all mpa {}");
+        log.info("Get all mpa");
         return mpaService.getAll();
     }
 
