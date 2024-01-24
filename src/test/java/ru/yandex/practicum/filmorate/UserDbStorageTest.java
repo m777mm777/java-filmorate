@@ -116,12 +116,12 @@ class UserDbStorageTest {
 
         userStorage.create(user);
 
-        User user2 = userStorage.getById(5L);;
+        User user2 = userStorage.getById(4L);;
         user2.setName("Update Name");
 
         userStorage.update(user2);
 
-        User chek = userStorage.getById(5L);
+        User chek = userStorage.getById(4L);
 
         assertThat(!chek.equals(null));
         assertThat(user2.getName().equals("Update Name"));
@@ -150,9 +150,9 @@ class UserDbStorageTest {
 
         userStorage.create(user2);
 
-        friendsStorage.addFriend(7L, 8L);
+        friendsStorage.addFriend(6L, 7L);
 
-        List<User> friends = friendsStorage.getUserFriends(7L);
+        List<User> friends = friendsStorage.getUserFriends(6L);
         assertThat(friends).hasSize(1);
     }
 
@@ -178,14 +178,14 @@ class UserDbStorageTest {
 
         userStorage.create(user2);
 
-        friendsStorage.addFriend(9L, 10L);
-        Collection<User> friends = friendsStorage.getUserFriends(9L);
+        friendsStorage.addFriend(8L, 9L);
+        Collection<User> friends = friendsStorage.getUserFriends(8L);
 
         assertThat(friends).hasSize(1);
 
-        friendsStorage.removeFriend(9L, 10L);
+        friendsStorage.removeFriend(8L, 9L);
 
-        friends = friendsStorage.getUserFriends(9L);
+        friends = friendsStorage.getUserFriends(8L);
 
         assertThat(friends).hasSize(0);
     }
@@ -227,12 +227,12 @@ class UserDbStorageTest {
 
         userStorage.create(user3);
 
-        friendsStorage.addFriend(11L, 12L);
-        friendsStorage.addFriend(13L, 12L);
+        friendsStorage.addFriend(10L, 11L);
+        friendsStorage.addFriend(12L, 11L);
 
-        List<User> commonFriends = friendsStorage.getMutualFriends(11L, 13L);
+        List<User> commonFriends = friendsStorage.getMutualFriends(10L, 12L);
 
         assertThat(commonFriends).hasSize(1);
-        assertThat(commonFriends.get(0).getId() == 12L);
+        assertThat(commonFriends.get(0).getId() == 11L);
     }
 }
