@@ -116,12 +116,12 @@ class UserDbStorageTest {
 
         userStorage.create(user);
 
-        User user2 = userStorage.getById(6L);;
+        User user2 = userStorage.getById(5L);;
         user2.setName("Update Name");
 
         userStorage.update(user2);
 
-        User chek = userStorage.getById(6L);
+        User chek = userStorage.getById(5L);
 
         assertThat(!chek.equals(null));
         assertThat(user2.getName().equals("Update Name"));
