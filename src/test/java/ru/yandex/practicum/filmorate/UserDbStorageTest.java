@@ -227,12 +227,14 @@ class UserDbStorageTest {
 
         userStorage.create(user3);
 
-        friendsStorage.addFriend(6L, 7L);
-        friendsStorage.addFriend(8L, 7L);
+        List<User> users = userStorage.getAll();
+        
+        friendsStorage.addFriend(users.get(2).getId(), users.get(0).getId());
+        friendsStorage.addFriend(users.get(1).getId(), users.get(0).getId());
 
-        List<User> commonFriends = friendsStorage.getMutualFriends(6L, 8L);
+        List<User> commonFriends = friendsStorage.getMutualFriends(users.get(1).getId(), users.get(2).getId());
 
         assertThat(commonFriends).hasSize(1);
-        assertThat(commonFriends.get(0).getId() == 7L);
+        assertThat(commonFriends.get(0).getId() == users.get(0).getId());
     }
 }
