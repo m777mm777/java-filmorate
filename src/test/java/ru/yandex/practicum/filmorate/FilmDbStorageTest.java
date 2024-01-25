@@ -42,12 +42,12 @@ class FilmDbStorageTest {
                 .mpa(Mpa.builder().id(2L).build())
                 .build();
 
-        film = filmStorage.create(film);
+        filmStorage.create(film);
         Mpa mpa = mpaStorage.getById(2L);
         assertThat(!mpa.equals(null));
         film.setMpa(mpa);
 
-        Film film1 = filmStorage.getById(film.getId());
+        Film film1 = filmStorage.getById(film.getId()).get(0);
 
         assertThat(!film1.equals(null));
         assertThat(film.equals(film1));
@@ -68,7 +68,7 @@ class FilmDbStorageTest {
 
         filmStorage.create(film);
 
-        Film film1 = filmStorage.getById(8L);
+        Film film1 = filmStorage.getById(8L).get(0);
 
         assertThat(film.getId().equals(film1.getId()));
         assertThat(film.getName().equals(film1.getName()));
@@ -87,7 +87,7 @@ class FilmDbStorageTest {
                 .mpa(Mpa.builder().id(1L).build())
                 .build();
 
-        film = filmStorage.create(film);
+        film = filmStorage.create(film).get(0);
 
         Collection<Film> films = filmStorage.getAll();
         assertThat(films).hasSize(1);
@@ -131,7 +131,7 @@ class FilmDbStorageTest {
 
         filmStorage.create(film);
 
-        Film film2 = filmStorage.getById(5L);
+        Film film2 = filmStorage.getById(5L).get(0);
         assertThat(!film.equals(null));
 
         Film film1 = film2;
@@ -139,7 +139,7 @@ class FilmDbStorageTest {
 
         filmStorage.update(film1);
 
-        Film cheUpdate = filmStorage.getById(5L);
+        Film cheUpdate = filmStorage.getById(5L).get(0);
 
         assertThat(film.equals(cheUpdate));
     }

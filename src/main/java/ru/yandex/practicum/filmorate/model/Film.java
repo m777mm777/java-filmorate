@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
@@ -14,6 +15,7 @@ import java.util.*;
 @Data
 @SuperBuilder
 @NoArgsConstructor(force = true)
+@EqualsAndHashCode
 public class Film extends BaseUnit {
 
     @NotBlank(message = "Введите название фильма.")
@@ -27,6 +29,5 @@ public class Film extends BaseUnit {
     private int duration;
     @NotNull
     private Mpa mpa;
-
     private Set<Genre> genres = new LinkedHashSet<>();
 }

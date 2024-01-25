@@ -54,19 +54,19 @@ public class FilmController {
 
     @GetMapping("/popular")
     public List getFilmTopTenLike(@RequestParam(defaultValue = "10") @Positive Integer count) {
-        log.info("Get get Film Top Like {}", count);
+        log.info("Get Film Top Like {}", count);
         return filmService.getFilmTopTenLike(count);
     }
 
     @PutMapping("/{id}/like/{userId}")
     public void addLike(@PathVariable Long id, @PathVariable Long userId) {
-        log.info("Put put Film Top Like {}", id, " ", userId);
+        log.info("Put Film Top Like {} userId {}", id, userId);
         filmService.addLike(id, userId);
     }
 
     @DeleteMapping("/{id}/like/{userId}")
     public void removeLike(@PathVariable Long id, @PathVariable Long userId) {
-        log.info("Delit delit Film Top Like {}", id, " ", userId);
+        log.info("Delit Film Top Like {} userId {}", id, userId);
         filmService.removeLike(id, userId);
     }
 }

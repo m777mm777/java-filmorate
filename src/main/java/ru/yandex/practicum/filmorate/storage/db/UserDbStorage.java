@@ -37,7 +37,6 @@ public class UserDbStorage extends BaseUserAndFriendDb implements UserStorage {
         return getById(keyHolder.getKey().longValue());
     }
 
-    @Override
     public User update(User user) {
         User use1 = getById(user.getId());
         String sqlQuery = "update users set user_name = ?, user_login = ?, email = ?, birthday = ? where user_id = ?";

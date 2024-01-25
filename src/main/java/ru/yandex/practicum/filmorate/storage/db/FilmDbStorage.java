@@ -6,7 +6,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.exeption.DataIsNotValid;
 import ru.yandex.practicum.filmorate.exeption.DataNotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
@@ -17,8 +16,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.*;
 
-import static ru.yandex.practicum.filmorate.controller.FilmController.START_RELEASE_DATA;
-
 @Component
 public class FilmDbStorage extends BaseFilmAndLikeDb implements FilmStorage {
 
@@ -28,9 +25,7 @@ public class FilmDbStorage extends BaseFilmAndLikeDb implements FilmStorage {
     }
 
     @Override
-    public Film create(Film film) {
-        validate(film);
-
+    public List<Film> create(Film film) {
         String sql = "INSERT INTO films (film_name, film_description, release_date, duration, mpa_id)" +
                 " VALUES (?, ?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -47,17 +42,16 @@ public class FilmDbStorage extends BaseFilmAndLikeDb implements FilmStorage {
         film.setId((long) keyHolder.getKey().intValue());
 
         if (film.getGenres() != null && !film.getGenres().isEmpty()) {
-            batchInsert(checkingForGenreRepetition(film.getGenres()), film);
+            batchInsert(film);
         }
 
-        film.setGenres(getGenresByFilmId(film.getId()));
-
-        return film;
+        List<Film> films = new ArrayList<>();
+        films.add(film);
+        return films;
     }
 
-    @Override
-    public Film update(Film film) {
-        Film film1 = getById(film.getId());
+    public List<Film> update(Film film) {
+        Film film1 = getById(film.getId()).get(0);
         String sqlQuery = "update films set " +
                 "film_name = ?, film_description = ?, release_date = ?, duration = ?, mpa_id = ?  where film_id = ?";
         jdbcTemplate.update(sqlQuery,
@@ -74,23 +68,26 @@ public class FilmDbStorage extends BaseFilmAndLikeDb implements FilmStorage {
         } else {
             String sqlDelete = "DELETE FROM filmGenre WHERE film_id = ?";
             jdbcTemplate.update(sqlDelete, film.getId());
-            batchInsert(checkingForGenreRepetition(film.getGenres()), film);
+            batchInsert(film);
         }
 
-        film.setGenres(getGenresByFilmId(film.getId()));
-
-        return film;
+        List<Film> films = new ArrayList<>();
+        films.add(film);
+        return films;
     }
 
-    private int[] batchInsert(List<Long> genres, Film film) {
+    private int[] batchInsert(Film film) {
+        List<Genre> genres = new ArrayList<>();
+        for (Genre i : film.getGenres()) {
+            genres.add(i);
+        }
 
         return this.jdbcTemplate.batchUpdate(
                 "INSERT INTO filmGenre (film_id, genre_id) VALUES (?, ?)",
                 new BatchPreparedStatementSetter() {
-
                     public void setValues(PreparedStatement ps, int i) throws SQLException {
 
-                        Long id = genres.get(i);
+                        Long id = genres.get(i).getId();
                         ps.setLong(1, film.getId());
                         ps.setLong(2, id);
                     }
@@ -112,8 +109,7 @@ public class FilmDbStorage extends BaseFilmAndLikeDb implements FilmStorage {
     }
 
     @Override
-    public Film getById(Long id) {
-
+    public List<Film> getById(Long id) {
         String sqlQuery = "SELECT f.film_id, f.film_name, f.film_description, f.release_date, " +
                 "f.duration, f.mpa_id, m.mpa_name " +
                 "FROM films f " +
@@ -126,28 +122,12 @@ public class FilmDbStorage extends BaseFilmAndLikeDb implements FilmStorage {
             throw new DataNotFoundException("Ошибка по данному id нет фильма или в нем ошибка");
         }
 
-        return films.get(0);
+        return films;
     }
 
     @Override
     public void deleteById(Long id) {
         String query = "DELETE FROM films WHERE film_id = ?";
         jdbcTemplate.update(query, id);
-    }
-
-    public void validate(Film film) {
-        if (film.getReleaseDate().isBefore(START_RELEASE_DATA)) {
-            throw new DataIsNotValid("Film release data is invalid");
-        }
-    }
-
-    private List<Long> checkingForGenreRepetition(Set<Genre> genres) {
-        List<Long> check = new ArrayList<>();
-        for (Genre genre : genres) {
-            if (!check.contains(genre.getId())) {
-                check.add(genre.getId());
-            }
-        }
-        return check;
     }
 }
