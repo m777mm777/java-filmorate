@@ -19,6 +19,7 @@ import ru.yandex.practicum.filmorate.storage.db.UserDbStorage;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -40,6 +41,7 @@ class FilmDbStorageTest {
                 .releaseDate(LocalDate.now())
                 .duration(120)
                 .mpa(Mpa.builder().id(2L).build())
+                .genres(new HashSet<>())
                 .build();
 
         filmStorage.create(film);
@@ -63,6 +65,7 @@ class FilmDbStorageTest {
                 .releaseDate(LocalDate.now())
                 .duration(120)
                 .mpa(Mpa.builder().id(2L).build())
+                .genres(new HashSet<>())
                 .build();
         film.setId(1L);
 
@@ -85,6 +88,7 @@ class FilmDbStorageTest {
                 .releaseDate(LocalDate.now())
                 .duration(120)
                 .mpa(Mpa.builder().id(1L).build())
+                .genres(new HashSet<>())
                 .build();
 
         film = filmStorage.create(film).get(0);
@@ -109,6 +113,7 @@ class FilmDbStorageTest {
                 .releaseDate(LocalDate.now())
                 .duration(120)
                 .mpa(Mpa.builder().id(1L).build())
+                .genres(new HashSet<>())
                 .build();
 
         filmStorage.create(film);
@@ -127,6 +132,7 @@ class FilmDbStorageTest {
                 .releaseDate(LocalDate.now())
                 .duration(120)
                 .mpa(Mpa.builder().id(1L).build())
+                .genres(new HashSet<>())
                 .build();
 
         filmStorage.create(film);
@@ -173,6 +179,7 @@ class FilmDbStorageTest {
                 .releaseDate(LocalDate.now())
                 .duration(120)
                 .mpa(Mpa.builder().id(1L).build())
+                .genres(new HashSet<>())
                 .build();
 
         filmStorage.create(film);
@@ -217,6 +224,7 @@ class FilmDbStorageTest {
                 .releaseDate(LocalDate.now())
                 .duration(120)
                 .mpa(Mpa.builder().id(1L).build())
+                .genres(new HashSet<>())
                 .build();
 
         filmStorage.create(film);
@@ -252,6 +260,7 @@ class FilmDbStorageTest {
                 .releaseDate(LocalDate.now())
                 .duration(120)
                 .mpa(Mpa.builder().id(1L).build())
+                .genres(new HashSet<>())
                 .build();
 
         filmStorage.create(film);
