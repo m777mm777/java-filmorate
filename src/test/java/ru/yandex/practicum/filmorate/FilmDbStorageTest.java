@@ -185,9 +185,9 @@ class FilmDbStorageTest {
         filmStorage.create(film);
         filmStorage.create(film);
 
-        likeStorage.addLike(2L, 1L);
-        likeStorage.addLike(3L, 1L);
-        likeStorage.addLike(3L, 2L);
+        likeStorage.addLike(filmStorage.getAll().get(0).getId(), userStorage.getAll().get(0).getId());
+        likeStorage.addLike(filmStorage.getAll().get(1).getId(), userStorage.getAll().get(0).getId());
+        likeStorage.addLike(filmStorage.getAll().get(1).getId(), userStorage.getAll().get(1).getId());
 
         Collection<Film> popularFilms = likeStorage.getFilmTopTenLike(10);
         Film film1 = ((List<Film>) popularFilms).get(0);
@@ -230,17 +230,17 @@ class FilmDbStorageTest {
         filmStorage.create(film);
         filmStorage.create(film);
 
-        likeStorage.addLike(10L, 5L);
-        likeStorage.addLike(11L, 5L);
-        likeStorage.addLike(11L, 6L);
+        likeStorage.addLike(filmStorage.getAll().get(0).getId(), userStorage.getAll().get(0).getId());
+        likeStorage.addLike(filmStorage.getAll().get(1).getId(), userStorage.getAll().get(0).getId());
+        likeStorage.addLike(filmStorage.getAll().get(1).getId(), userStorage.getAll().get(1).getId());
 
         Collection<Film> popularFilms1 = likeStorage.getFilmTopTenLike(10);
         Film film2 = ((List<Film>) popularFilms1).get(0);
 
         assertThat(film2.getId() == 11);
 
-        likeStorage.removeLike(11L, 5L);
-        likeStorage.removeLike(11L, 5L);
+        likeStorage.removeLike(filmStorage.getAll().get(1).getId(), userStorage.getAll().get(0).getId());
+        likeStorage.removeLike(filmStorage.getAll().get(1).getId(), userStorage.getAll().get(0).getId());
 
         Collection<Film> popularFilms = likeStorage.getFilmTopTenLike(10);
         Film film1 = ((List<Film>) popularFilms).get(0);
@@ -283,13 +283,13 @@ class FilmDbStorageTest {
 
         userStorage.create(user2);
 
-        likeStorage.addLike(6L, 3L);
-        likeStorage.addLike(7L, 3L);
-        likeStorage.addLike(7L, 4L);
+        likeStorage.addLike(filmStorage.getAll().get(0).getId(), userStorage.getAll().get(0).getId());
+        likeStorage.addLike(filmStorage.getAll().get(1).getId(), userStorage.getAll().get(0).getId());
+        likeStorage.addLike(filmStorage.getAll().get(1).getId(), userStorage.getAll().get(1).getId());
 
         List<Film> popularFilms = likeStorage.getFilmTopTenLike(10);
 
         assertThat(popularFilms).hasSize(2);
-        assertThat(popularFilms.get(0) == filmStorage.getById(7L));
+        assertThat(popularFilms.get(0) == filmStorage.getById(filmStorage.getAll().get(0).getId()));
     }
 }
