@@ -11,7 +11,5 @@ public interface GenreStorage {
 
     public List<Genre> getAll();
 
-    public List<Genre> getGenresByFilmID(Long filmId);
-
-    public List<Film> addGenresToFilm(List<Film> films);
+    public void load(List<Film> films);
 }

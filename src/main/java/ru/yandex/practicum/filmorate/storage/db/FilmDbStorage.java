@@ -41,11 +41,12 @@ public class FilmDbStorage extends BaseFilmAndLikeDb implements FilmStorage {
                 }, keyHolder);
         film.setId((long) keyHolder.getKey().intValue());
 
-        if (film.getGenres() != null && !film.getGenres().isEmpty()) {
+        if (film.getGenres() != null & !film.getGenres().isEmpty()) {
             batchInsert(film);
         }
 
         List<Film> films = new ArrayList<>();
+        film.getGenres().clear();
         films.add(film);
         return films;
     }
@@ -72,6 +73,7 @@ public class FilmDbStorage extends BaseFilmAndLikeDb implements FilmStorage {
         }
 
         List<Film> films = new ArrayList<>();
+        film.getGenres().clear();
         films.add(film);
         return films;
     }

@@ -6,6 +6,7 @@ import ru.yandex.practicum.filmorate.model.Mpa;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashSet;
 
 public class BaseFilmAndLikeDb {
 
@@ -25,6 +26,7 @@ public class BaseFilmAndLikeDb {
                 .releaseDate(rs.getDate("release_date").toLocalDate())
                 .duration(rs.getInt("duration"))
                 .mpa(mpa)
+                .genres(new HashSet<>())
                 .build();
     }
 

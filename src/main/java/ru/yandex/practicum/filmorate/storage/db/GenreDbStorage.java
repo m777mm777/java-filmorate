@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.storage.db;
 
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exeption.DataNotFoundException;
@@ -10,10 +11,10 @@ import ru.yandex.practicum.filmorate.storage.GenreStorage;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.function.UnaryOperator.identity;
 
 @Component
 @RequiredArgsConstructor
@@ -37,16 +38,6 @@ public class GenreDbStorage implements GenreStorage {
         return jdbcTemplate.query(sqlQuery, GenreDbStorage::createGenre);
     }
 
-    public List<Genre> getGenresByFilmID(Long filmId) {
-        String sqlQuery
-                = "SELECT g.genre_id, g.genre_name " +
-                "FROM genres AS g " +
-                "INNER JOIN filmGenre AS fg ON fg.genre_id = g.genre_id WHERE film_id = ? ORDER BY genre_id ASC";
-        List<Genre> genres = jdbcTemplate.query(sqlQuery, GenreDbStorage::createGenre, filmId);
-
-        return genres;
-    }
-
     static Genre createGenre(ResultSet rs, int rowNum) throws SQLException {
         return Genre.builder()
                 .id(rs.getLong("genre_id"))
@@ -54,35 +45,31 @@ public class GenreDbStorage implements GenreStorage {
                 .build();
     }
 
-    public List<Film> addGenresToFilm(List<Film> films) {
-        List<Film> filmWithGenres = new ArrayList<>();
-        for (Film film: films) {
+    @Override
+    public void load(List<Film> films) {
+        final Map<Long, Film> filmById = films.stream().collect(Collectors.toMap(Film::getId, identity()));
 
-            Set<Genre> genres = getGenresByFilmId(film.getId());
-            if (genres != null && genres.isEmpty()) genres.clear();
+        String inSql = String.join(",", Collections.nCopies(films.size(), "?"));
+        final String sqlQuery = "SELECT * " +
+                "FROM genres g, filmGenre fg WHERE fg.genre_id = g.genre_id AND fg.film_id IN (" + inSql + ")";
 
-            film.setGenres(genres);
-            filmWithGenres.add(film);
-        }
+        jdbcTemplate.query(sqlQuery, (rs, rowNum) -> {
+            final Film film = filmById.get(rs.getLong("FILM_ID"));
 
-        return filmWithGenres;
+            film.setGenres(film.getGenres());
+            film.getGenres().add(makeGenre(rs, 0));
+
+            return film;
+        }, films.stream().map(Film::getId).toArray());
+
     }
 
-    private Set<Genre> getGenresByFilmId(Long filmId) {
-        String sqlQuery = "SELECT g.genre_id, g.genre_name FROM genres g" +
-                "  INNER JOIN filmGenre f ON f.genre_id = g.genre_id" +
-                "  WHERE film_id = ? " +
-                "ORDER BY genre_id ASC;";
-
-        List<Genre> genres = jdbcTemplate.query(sqlQuery, this::rowMapGenre, filmId);
-
-        return new HashSet<>(genres);
-    }
-
-    private Genre rowMapGenre(ResultSet resultSet, int i) throws SQLException {
-        return Genre.builder()
+    private Genre makeGenre(ResultSet resultSet, int i) throws SQLException {
+        Genre genre = Genre.builder()
                 .id(resultSet.getLong("genre_id"))
                 .name(resultSet.getString("genre_name"))
                 .build();
+
+        return genre;
     }
 }

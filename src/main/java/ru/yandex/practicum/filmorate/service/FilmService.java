@@ -31,25 +31,36 @@ public class FilmService {
     }
 
     public List<Film> getFilmTopTenLike(Integer count) {
-        return genreStorage.addGenresToFilm(likeStorage.getFilmTopTenLike(count));
+        List<Film> films = likeStorage.getFilmTopTenLike(count);
+        genreStorage.load(films);
+        return films;
     }
 
     public Film create(Film film) {
         validate(film);
-        return genreStorage.addGenresToFilm(filmStorage.create(film)).get(0);
+        List<Film> films = filmStorage.create(film);
+        genreStorage.load(films);
+        return films.get(0);
     }
 
     public Film update(Film film) {
         validate(film);
-        return genreStorage.addGenresToFilm(filmStorage.update(film)).get(0);
+        List<Film> films = filmStorage.update(film);
+        genreStorage.load(films);
+        return films.get(0);
     }
 
     public List<Film> getAll() {
-        return genreStorage.addGenresToFilm(filmStorage.getAll());
+        List<Film> films = filmStorage.getAll();
+        genreStorage.load(films);
+        return films;
     }
 
     public Film getById(Long id) {
-        return genreStorage.addGenresToFilm(filmStorage.getById(id)).get(0);
+        List<Film> films = filmStorage.getById(id);
+        genreStorage.load(films);
+        return films.get(0);
+
     }
 
     public void deleteById(Long id) {
