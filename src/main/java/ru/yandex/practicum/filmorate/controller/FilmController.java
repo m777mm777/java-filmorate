@@ -11,7 +11,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Validated
 @RequiredArgsConstructor
@@ -43,31 +42,31 @@ public class FilmController {
 
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Long id) {
-        log.info("Delete film {}");
-        filmService.deleteById(Optional.of(id));
+        log.info("Delete film {}", id);
+        filmService.deleteById(id);
     }
 
     @GetMapping("/{id}")
     public Film getById(@PathVariable Long id) {
-        log.info("Get film {}");
-        return filmService.getById(Optional.of(id));
+        log.info("Get film {}", id);
+        return filmService.getById(id);
     }
 
     @GetMapping("/popular")
     public List getFilmTopTenLike(@RequestParam(defaultValue = "10") @Positive Integer count) {
-        log.info("Get get Film Top Like {}");
+        log.info("Get Film Top Like {}", count);
         return filmService.getFilmTopTenLike(count);
     }
 
     @PutMapping("/{id}/like/{userId}")
     public void addLike(@PathVariable Long id, @PathVariable Long userId) {
-        log.info("Put put Film Top Like {}");
-        filmService.addLike(Optional.of(id), Optional.of(userId));
+        log.info("Put Film Top Like {} userId {}", id, userId);
+        filmService.addLike(id, userId);
     }
 
     @DeleteMapping("/{id}/like/{userId}")
     public void removeLike(@PathVariable Long id, @PathVariable Long userId) {
-        log.info("Delit delit Film Top Like {}");
-        filmService.removeLike(Optional.of(id), Optional.of(userId));
+        log.info("Delit Film Top Like {} userId {}", id, userId);
+        filmService.removeLike(id, userId);
     }
 }

@@ -1,60 +1,75 @@
 package ru.yandex.practicum.filmorate.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exeption.DataNotFoundException;
+import ru.yandex.practicum.filmorate.exeption.DataIsNotValid;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.GenreStorage;
+import ru.yandex.practicum.filmorate.storage.LikeStorage;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.util.List;
-import java.util.Optional;
+
+import static ru.yandex.practicum.filmorate.controller.FilmController.START_RELEASE_DATA;
 
 @Service
+@RequiredArgsConstructor
 public class FilmService {
 
     private final UserStorage userStorage;
     private final FilmStorage filmStorage;
+    private final LikeStorage likeStorage;
+    private final GenreStorage genreStorage;
 
-    @Autowired
-    public FilmService(FilmStorage filmStorage, UserStorage userStorage) {
-        this.userStorage = userStorage;
-        this.filmStorage = filmStorage;
+    public void addLike(Long idFilm, Long idUser) {
+        likeStorage.addLike(filmStorage.getById(idFilm).get(0).getId(), userStorage.getById(idUser).getId());
     }
 
-    public void addLike(Optional<Long> idFilm, Optional<Long> idUser) {
-            filmStorage.addLike(checkId(idFilm), userStorage.getById(checkId(idUser)).getId());
-    }
-
-    public void removeLike(Optional<Long> idFilm, Optional<Long> idUser) {
-            filmStorage.removeLike(checkId(idFilm), userStorage.getById(checkId(idUser)).getId());
+    public void removeLike(Long idFilm, Long idUser) {
+        likeStorage.removeLike(filmStorage.getById(idFilm).get(0).getId(), userStorage.getById(idUser).getId());
     }
 
     public List<Film> getFilmTopTenLike(Integer count) {
-        return filmStorage.getFilmTopTenLike(count);
+        List<Film> films = likeStorage.getFilmTopTenLike(count);
+        genreStorage.load(films);
+        return films;
     }
 
     public Film create(Film film) {
-        return filmStorage.create(film);
+        validate(film);
+        List<Film> films = filmStorage.create(film);
+        genreStorage.load(films);
+        return films.get(0);
     }
 
     public Film update(Film film) {
-        return filmStorage.update(film);
+        validate(film);
+        List<Film> films = filmStorage.update(film);
+        genreStorage.load(films);
+        return films.get(0);
     }
 
     public List<Film> getAll() {
-        return filmStorage.getAll();
+        List<Film> films = filmStorage.getAll();
+        genreStorage.load(films);
+        return films;
     }
 
-    public Film getById(Optional<Long> id) {
-        return filmStorage.getById(checkId(id));
+    public Film getById(Long id) {
+        List<Film> films = filmStorage.getById(id);
+        genreStorage.load(films);
+        return films.get(0);
+
     }
 
-    public void deleteById(Optional<Long> id) {
-        filmStorage.deleteById(checkId(id));
+    public void deleteById(Long id) {
+        filmStorage.deleteById(id);
     }
 
-    public Long checkId(Optional<Long> id) {
-        return id.orElseThrow(() -> new DataNotFoundException("Не верный id Фильма"));
+    public void validate(Film film) {
+        if (film.getReleaseDate().isBefore(START_RELEASE_DATA)) {
+            throw new DataIsNotValid("Film release data is invalid");
+        }
     }
 }

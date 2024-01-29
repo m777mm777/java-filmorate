@@ -8,7 +8,6 @@ import ru.yandex.practicum.filmorate.service.UserService;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -18,7 +17,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping
+    @PostMapping()
     public User create(@Valid @RequestBody User user) {
         log.info("Creating user {}", user);
         return userService.create(user);
@@ -37,38 +36,38 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable Optional<Long> id) {
-        log.info("Delete film {}");
+    public void deleteById(@PathVariable Long id) {
+        log.info("Delete film {}", id);
         userService.deleteById(id);
     }
 
     @GetMapping("/{id}")
-    public User getById(@PathVariable Optional<Long> id) {
-        log.info("Get film {}");
+    public User getById(@PathVariable Long id) {
+        log.info("Get film {}", id);
         return userService.getById(id);
     }
 
     @PutMapping("/{id}/friends/{friendId}")
-    public void addFriend(@PathVariable Optional<Long> id, @PathVariable Optional<Long> friendId) {
-        log.info("Put friends {}");
+    public void addFriend(@PathVariable Long id, @PathVariable Long friendId) {
+        log.info("Put id {} friendId {}", id, friendId);
         userService.addFriend(id, friendId);
     }
 
     @DeleteMapping("/{id}/friends/{friendId}")
-    public void removeFriend(@PathVariable Optional<Long> id,@PathVariable Optional<Long> friendId) {
-        log.info("Delet friends {}");
+    public void removeFriend(@PathVariable Long id,@PathVariable Long friendId) {
+        log.info("Delet id {} friendId {}", id, friendId);
         userService.removeFriend(id, friendId);
     }
 
     @GetMapping("/{id}/friends")
-    public List<User> getUserFriends(@PathVariable Optional<Long> id) {
-        log.info("Get friends {}");
+    public List<User> getUserFriends(@PathVariable Long id) {
+        log.info("Get friends {}", id);
         return userService.getFriends(id);
     }
 
     @GetMapping("/{id}/friends/common/{otherId}")
-    public List<User> getMutualFriends(@PathVariable Optional<Long> id, @PathVariable Optional<Long> otherId) {
-        log.info("Get friends Mutual {}");
+    public List<User> getMutualFriends(@PathVariable Long id, @PathVariable Long otherId) {
+        log.info("Get friends Mutual id {} otherId {}", id, otherId);
         return userService.getMutualFriends(id, otherId);
     }
 }

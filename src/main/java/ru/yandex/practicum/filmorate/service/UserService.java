@@ -1,45 +1,53 @@
 package ru.yandex.practicum.filmorate.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exeption.DataNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.storage.FriendsStorage;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.util.List;
-import java.util.Optional;
+
+import static org.apache.logging.log4j.util.Strings.isBlank;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserStorage userStorage;
+    private final FriendsStorage friendsStorage;
 
-    @Autowired
-    public UserService(UserStorage userStorage) {
-        this.userStorage = userStorage;
+    public void addFriend(Long id, Long friendId) {
+        User user = getById(id);
+        User friend = getById(friendId);
+        friendsStorage.addFriend(user.getId(), friend.getId());
     }
 
-    public void addFriend(Optional<Long> id, Optional<Long> friendId) {
-        userStorage.addFriend(checkId(id), checkId(friendId));
+    public void removeFriend(Long id, Long friendId) {
+        User user = getById(id);
+        User friend = getById(friendId);
+        friendsStorage.removeFriend(user.getId(), friend.getId());
     }
 
-    public void removeFriend(Optional<Long> idUser1, Optional<Long> idUser2) {
-        userStorage.removeFriend(checkId(idUser1), checkId(idUser2));
+    public List<User> getFriends(Long idUser) {
+        User user = getById(idUser);
+        return friendsStorage.getUserFriends(user.getId());
     }
 
-    public List<User> getFriends(Optional<Long> idUser) {
-        return userStorage.getUserFriends(checkId(idUser));
-    }
-
-    public List<User> getMutualFriends(Optional<Long> idUser1, Optional<Long> idUser2) {
-        return userStorage.getMutualFriends(checkId(idUser1), checkId(idUser2));
+    public List<User> getMutualFriends(Long idUser1, Long idUser2) {
+        User user = getById(idUser1);
+        User otherUser = getById(idUser2);
+        return friendsStorage.getMutualFriends(user.getId(), otherUser.getId());
     }
 
     public User create(User user) {
+        validate(user);
         return userStorage.create(user);
     }
 
     public User update(User user) {
+        getById(user.getId());
+        validate(user);
         return userStorage.update(user);
     }
 
@@ -47,16 +55,17 @@ public class UserService {
         return userStorage.getAll();
     }
 
-    public User getById(Optional<Long> id) {
-        return userStorage.getById(checkId(id));
+    public User getById(Long id) {
+        return userStorage.getById(id);
     }
 
-    public void deleteById(Optional<Long> id) {
-        userStorage.deleteById(checkId(id));
+    public void deleteById(Long id) {
+        userStorage.deleteById(id);
     }
 
-    private Long checkId(Optional<Long> id) {
-        return id.orElseThrow(() -> new DataNotFoundException("Не верный id пользователя"));
+    public void validate(User user) {
+        if (isBlank(user.getName())) {
+            user.setName(user.getLogin());
+        }
     }
-
 }

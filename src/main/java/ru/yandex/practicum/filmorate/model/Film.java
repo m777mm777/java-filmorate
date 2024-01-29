@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -11,13 +10,12 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @NoArgsConstructor(force = true)
+@EqualsAndHashCode
 public class Film extends BaseUnit {
 
     @NotBlank(message = "Введите название фильма.")
@@ -29,11 +27,7 @@ public class Film extends BaseUnit {
     private LocalDate releaseDate;
     @Min(1)
     private int duration;
-    @JsonIgnore
-    private Set<Long> likes = new HashSet<>();
-
-    public int quantityLike() {
-        return likes.size();
-    }
-
+    @NotNull
+    private Mpa mpa;
+    private Set<Genre> genres = new LinkedHashSet<>();
 }

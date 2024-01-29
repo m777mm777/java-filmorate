@@ -5,10 +5,9 @@ import ru.yandex.practicum.filmorate.model.Film;
 import java.util.List;
 
 public interface FilmStorage extends AbstractStorage<Film> {
+    List<Film> create(Film data);
 
-    void addLike(Long idFilm, Long idUser);
+    List<Film> update(Film data);
 
-    void removeLike(Long idFilm, Long idUser);
-
-    List getFilmTopTenLike(Integer count);
+    List<Film> getById(Long id);
 }
