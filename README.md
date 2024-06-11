@@ -1,2 +1,2 @@
 # java-filmorate
-Template repository for Filmorate project.
+Приложение для поиска фильмов/сериалов аналог "Кино-поиска"
